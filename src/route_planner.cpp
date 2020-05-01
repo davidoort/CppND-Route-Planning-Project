@@ -123,5 +123,5 @@ void RoutePlanner::AStarSearch()
         current_node = NextNode();
     }
 
-    m_Model.path = ConstructFinalPath(current_node);
+    // m_Model.path = ConstructFinalPath(current_node);
 }
