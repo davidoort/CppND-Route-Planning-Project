@@ -77,15 +77,15 @@ int main(int argc, const char **argv)
         return 1;
 
     std::cout << "Enter your starting y location (0 - 100): " << std::endl;
-    if (!UserInput(start_x))
+    if (!UserInput(start_y))
         return 1;
 
     std::cout << "Enter your ending x location (0 - 100): " << std::endl;
-    if (!UserInput(start_x))
+    if (!UserInput(end_x))
         return 1;
 
     std::cout << "Enter your ending y location (0 - 100): " << std::endl;
-    if (!UserInput(start_x))
+    if (!UserInput(end_y))
         return 1;
 
     // Build Model.
