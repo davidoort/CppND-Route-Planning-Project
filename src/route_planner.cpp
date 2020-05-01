@@ -4,10 +4,16 @@
 RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, float end_x, float end_y) : m_Model(model)
 {
     // Convert inputs to percentage:
-    start_x *= 0.01;
-    start_y *= 0.01;
-    end_x *= 0.01;
-    end_y *= 0.01;
+    // start_x *= 0.01;
+    // start_y *= 0.01;
+    // end_x *= 0.01;
+    // end_y *= 0.01;
+
+    // Get some practice with pointers/references and range-based for-loops
+    std::vector<float*> inputs{&start_x, &start_y, &end_x, &end_y};
+    for (float * &input : inputs) {
+        *input *= 0.01;
+    }
 
     // Use the m_Model.FindClosestNode method to find the closest nodes to the starting and ending coordinates.
     // Store the nodes you find in the RoutePlanner's start_node and end_node attributes.
@@ -22,10 +28,10 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, floa
 
 float RoutePlanner::CalculateHValue(RouteModel::Node const *node)
 {
-    return (*node).distance(*end_node);
+    return node->distance(*end_node);
 }
 
-// TODO 4: Complete the AddNeighbors method to expand the current node by adding all unvisited neighbors to the open list.
+// Complete the AddNeighbors method to expand the current node by adding all unvisited neighbors to the open list.
 // Tips:
 // - Use the FindNeighbors() method of the current_node to populate current_node.neighbors vector with all the neighbors.
 // - For each node in current_node.neighbors, set the parent, the h_value, the g_value.
@@ -34,6 +40,14 @@ float RoutePlanner::CalculateHValue(RouteModel::Node const *node)
 
 void RoutePlanner::AddNeighbors(RouteModel::Node *current_node)
 {
+    (*current_node).FindNeighbors();
+    for (auto neighbor : (*current_node).neighbors) {
+        neighbor->parent = current_node;
+        neighbor->g_value = neighbor->distance(*current_node);
+        neighbor->h_value = CalculateHValue(neighbor);
+        neighbor->visited = true;
+        open_list.push_back(neighbor);
+    }
 }
 
 // TODO 5: Complete the NextNode method to sort the open list and return the next node.
