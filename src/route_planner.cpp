@@ -4,11 +4,6 @@
 RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, float end_x, float end_y) : m_Model(model)
 {
     // Convert inputs to percentage:
-    // start_x *= 0.01;
-    // start_y *= 0.01;
-    // end_x *= 0.01;
-    // end_y *= 0.01;
-
     // Get some practice with pointers/references and range-based for-loops
     std::vector<float*> inputs{&start_x, &start_y, &end_x, &end_y};
     for (float * &input : inputs) {
@@ -40,10 +35,10 @@ float RoutePlanner::CalculateHValue(RouteModel::Node const *node)
 
 void RoutePlanner::AddNeighbors(RouteModel::Node *current_node)
 {
-    (*current_node).FindNeighbors();
-    for (auto neighbor : (*current_node).neighbors) {
+    current_node->FindNeighbors();
+    for (auto neighbor : current_node->neighbors) {
         neighbor->parent = current_node;
-        neighbor->g_value = neighbor->distance(*current_node);
+        neighbor->g_value = neighbor->distance(*current_node) + current_node->g_value;
         neighbor->h_value = CalculateHValue(neighbor);
         neighbor->visited = true;
         open_list.push_back(neighbor);
@@ -73,7 +68,7 @@ RouteModel::Node *RoutePlanner::NextNode()
 {
     NodeSort(&open_list);
     auto node_pointer = open_list.back();
-    open_list.pop_back();
+    open_list.pop_back(); 
     return node_pointer;
 }
 
