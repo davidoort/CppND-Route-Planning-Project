@@ -120,8 +120,6 @@ void RoutePlanner::AStarSearch()
 {
     RouteModel::Node *current_node = start_node;
     current_node->visited = true;
-    open_list.push_back(current_node);
-    current_node = NextNode();
 
     while (current_node != end_node)
     {
